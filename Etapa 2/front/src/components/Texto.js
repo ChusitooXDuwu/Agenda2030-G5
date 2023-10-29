@@ -290,7 +290,7 @@ function Texto() {
                 <Card.Title className="title">Predicción</Card.Title>
                 <Card.Img
                   src="https://educowebmedia.blob.core.windows.net/educowebmedia/educospain/media/images/blog/agenda-2020-y-objetivos-de-desarrollo-sostenible.png"
-                  style={{ height: "50%", width: "50%" }}
+                  style={{ height: "70%", width: "70%" }}
                 />
                 <br />
                 <br />
