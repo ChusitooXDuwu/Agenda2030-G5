@@ -12,39 +12,20 @@ import json
 model = load("../../Etapa 1/model.joblib")
 app = FastAPI()
 
-origins = ["http://localhost:3000"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["POST"],
+    allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
+
+predictions_csv = "data/predictions.csv"
+predictions_xlsx = "data/predictions.xlsx"
 
 @app.get("/")
 def read_root():
    return {"Hello": "World"}
-
-
-
-# Se puede recivir un archivo excel o un Json con los datos a predecir.
-# Si se recive un Json se debe hacer la petición con el siguiente formato:
-# {
-#     "Textos_espanol": "Texto a predecir"
-# }
-# Si se recive un archivo excel se debe hacer la petición con el siguiente formato:
-# {
-#     "file": "Archivo excel"
-# }
-# En ambos casos se retorna un Json con el siguiente formato:
-# {
-#     "Textos_espanol": "Texto a predecir",
-#     "sdg": "Etiqueta predicha"
-# }
-
-
-
 
 @app.post("/predict")
 def make_predictions(dataModel: DataModel, ):
@@ -61,20 +42,22 @@ def make_predictions(dataModel: DataModel, ):
       "Textos_espanol": texto,
       "sdg": int(result),
    }
+
    return response
 
 @app.post("/predict_file")
-def make_predictions_file(excel_file: UploadFile):
+async def make_predictions_file(file: UploadFile=File(...)):
+   
    try:
       #Si no termina en .xlsx  o .csv no se procesa 
-      if not excel_file.filename.endswith((".xlsx", ".csv")):
+      if not file.filename.endswith((".xlsx", ".csv")):
          return JSONResponse(status_code=400, content={"message": "El archivo debe ser un excel o un csv"})
       
       #Se lee el archivo si es un excel
-      if excel_file.filename.endswith(".xlsx"):
-         df = pd.read_excel(excel_file.file)
+      if file.filename.endswith(".xlsx"):
+         df = pd.read_excel(file.file)
       else:
-         df = pd.read_csv(excel_file.file)
+         df = pd.read_csv(file.file)
       
       #Se verifica que el archivo tenga la columna Textos_espanol
       if not "Textos_espanol" in df.columns:
@@ -83,21 +66,32 @@ def make_predictions_file(excel_file: UploadFile):
       result = model.predict(df)
       df['sdg'] = result
 
-      # predictions_list = result.tolist()
-      # return JSONResponse(content={"predictions": predictions_list}, status_code=200)
-
-
-      first_10_rows = df.head(2)
       # Crear una lista de diccionarios a partir del DataFrame
-      data_list = first_10_rows.to_dict(orient="records")
+      data_list = df.to_dict(orient="records")
 
-      # Crear el diccionario final
-      json_data = {"data": data_list}
+      # Convertir a csv y xlsx
+      df.to_csv(predictions_csv, index=False)
+      df.to_excel(predictions_xlsx, index=False)
 
-      # Convertir el diccionario a una cadena JSON
-      json_string = json.dumps(json_data, ensure_ascii=False)
-      print(data_list)
       return data_list
+   
+   except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+# Descargar el archivo csv o xlsx
+@app.get("/download_predictions_csv")
+def download_predictions():
+   try:
+      return FileResponse(predictions_csv, filename="predictions.csv")
    except Exception as e:
       print(e)
-      return JSONResponse(status_code=500, content={"message": "Hubo un error procesando el archivo"})
+      return JSONResponse(status_code=500, content={"message": "Hubo un error descargando el archivo"})
+
+@app.get("/download_predictions_xlsx")
+def download_predictions():
+   try:
+      return FileResponse(predictions_xlsx, filename="predictions.xlsx")
+   except Exception as e:
+      print(e)
+      return JSONResponse(status_code=500, content={"message": "Hubo un error descargando el archivo"})

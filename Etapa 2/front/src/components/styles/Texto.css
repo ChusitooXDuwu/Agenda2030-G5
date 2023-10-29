@@ -1,5 +1,5 @@
 * {
-  padding: 10px;
+  padding: 5px;
   box-sizing: border-box;
 }
 
@@ -15,6 +15,11 @@ Button {
   margin: 0px 5px;
   cursor: pointer;
   width: 100%;
+}
+
+#submit:disabled{
+  background-color: rgba(143, 169, 143, 0.8) !important;
+  color: rgba(0, 0, 0, 0.8) !important;
 }
 
 .loginText {
@@ -65,4 +70,8 @@ Button {
 
 .ingresar:hover {
   background-color: rgba(143, 169, 143, 0.8);
+}
+
+.download-link {
+  cursor: pointer;
 }
