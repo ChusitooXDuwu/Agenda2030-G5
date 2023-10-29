@@ -6,7 +6,7 @@ from onuModelo import DataModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse, FileResponse
-import io
+import json
 
 
 model = load("../../Etapa 1/model.joblib")
@@ -86,12 +86,18 @@ def make_predictions_file(excel_file: UploadFile):
       # predictions_list = result.tolist()
       # return JSONResponse(content={"predictions": predictions_list}, status_code=200)
 
-      # Guardar el DataFrame modificado en un nuevo archivo
-      output_filename = 'archivo_con_sdg.xlsx'  # Nombre del archivo de salida
-      df.to_excel(output_filename, index=False)
-      print('Archivo guardado con éxito')
-      # Devuelve el archivo resultante como una descarga
-      return FileResponse(output_filename, filename="result_file.xlsx")
+
+      first_10_rows = df.head(2)
+      # Crear una lista de diccionarios a partir del DataFrame
+      data_list = first_10_rows.to_dict(orient="records")
+
+      # Crear el diccionario final
+      json_data = {"data": data_list}
+
+      # Convertir el diccionario a una cadena JSON
+      json_string = json.dumps(json_data, ensure_ascii=False)
+      print(data_list)
+      return data_list
    except Exception as e:
       print(e)
       return JSONResponse(status_code=500, content={"message": "Hubo un error procesando el archivo"})

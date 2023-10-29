@@ -1,0 +1,68 @@
+* {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+Button {
+  border-color: transparent !important;
+  color: rgb(0, 0, 0) !important;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  margin: 0px 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.loginText {
+  text-align: left;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.containerr {
+  margin-top: 10%;  
+  padding: 16px;
+  background-color: rgba(142, 183, 202, 0.596);
+  border-radius: 5px;
+  border: 1px solid #000000;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
+.loginB {
+  width: 50%;
+}
+
+.formLabel {
+  text-align: left;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.error {
+  color: rgba(205, 50, 50, 1);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.form-control {
+  height: 40px;
+  border-radius: 0px;
+  border: 1px solid #000000;
+  padding-left: 5px;
+  background-color: rgb(255, 255, 255);
+}
+
+.ingresar {
+  background-color: rgba(143, 169, 143, 1);
+}
+
+.ingresar:hover {
+  background-color: rgba(143, 169, 143, 0.8);
+}
