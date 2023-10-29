@@ -67,7 +67,7 @@ function Texto() {
 
   return (
     <Row>
-      <Col xs={6}>
+      <Col xs={validationState.sdg ? 6 : 12}>
         <Container className="containerr">
           <h2 className="">Análisis de textos individuales</h2>
           <Row className="justify-content-center">
