@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import "./styles/Texto.css";
 import AppInfo from "./AppInfo";
+import "./styles/Texto.css";
 
 function Texto() {
   const [formValues, setFormValues] = useState({
@@ -89,10 +89,11 @@ function Texto() {
         method: "POST",
         body: formData,
       };
-
+      alert("Se esta procesando el archivo, por favor espere");
       const result = await fetch(URL, requestOptions);
 
       if (result.status === 200) {
+        
         console.log("OK");
         const data = await result.json();
         setPFile(data);
@@ -176,6 +177,11 @@ function Texto() {
   return (
     <div>
       <div>
+        <img
+          src="../logo-agenda-2030-removebg-preview.png"
+          alt="aaa"
+        />
+
         <AppInfo />
       </div>
       <Row className="row">
@@ -220,7 +226,6 @@ function Texto() {
               border="dark"
               style={{
                 backgroundColor: "rgba(224, 187, 187, 0.2)",
-                marginTop: "10%",
               }}
               className="cards"
             >
@@ -287,8 +292,6 @@ function Texto() {
               border="dark"
               style={{
                 backgroundColor: "rgba(224, 187, 187, 0.2)",
-                marginTop: "10%",
-                
               }}
               className="cards cards2"
             >
@@ -300,8 +303,12 @@ function Texto() {
                 />
                 <br />
                 <br />
-                <Card.Link onClick={downloadCSV} className="download-link">Descargar CSV</Card.Link>
-                <Card.Link onClick={downloadXLSX} className="download-link">Descargar XLSX</Card.Link>
+                <Card.Link onClick={downloadCSV} className="download-link">
+                  Descargar CSV
+                </Card.Link>
+                <Card.Link onClick={downloadXLSX} className="download-link">
+                  Descargar XLSX
+                </Card.Link>
               </Card.Body>
             </Card>
           )}
