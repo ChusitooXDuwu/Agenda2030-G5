@@ -37,29 +37,23 @@ def make_predictions(dataModel: DataModel, ):
 
 @app.post("/predict_file")
 async def make_predictions_file(file: UploadFile=File(...)):
-   
    try:
-      #Si no termina en .xlsx  o .csv no se procesa 
       if not file.filename.endswith((".xlsx", ".csv")):
          return JSONResponse(status_code=400, content={"message": "El archivo debe ser un excel o un csv"})
       
-      #Se lee el archivo si es un excel
       if file.filename.endswith(".xlsx"):
          df = pd.read_excel(file.file)
       else:
          df = pd.read_csv(file.file)
       
-      #Se verifica que el archivo tenga la columna Textos_espanol
       if not "Textos_espanol" in df.columns:
          return JSONResponse(status_code=400, content={"message": "El archivo no tiene la columna Textos_espanol"})
       
       result = model.predict(df)
       df['sdg'] = result
 
-      # Crear una lista de diccionarios a partir del DataFrame
       data_list = df.to_dict(orient="records")
 
-      # Convertir a csv y xlsx
       df.to_csv(predictions_csv, index=False)
       df.to_excel(predictions_xlsx, index=False)
 
@@ -68,7 +62,6 @@ async def make_predictions_file(file: UploadFile=File(...)):
    except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
-# Descargar el archivo csv
 @app.get("/download_predictions_csv")
 def download_predictions():
    try:
@@ -77,7 +70,6 @@ def download_predictions():
       print(e)
       return JSONResponse(status_code=500, content={"message": "Hubo un error descargando el archivo"})
 
-# Descargar el archivo xlsx
 @app.get("/download_predictions_xlsx")
 def download_predictions():
    try:

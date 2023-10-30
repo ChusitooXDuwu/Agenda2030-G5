@@ -16,7 +16,6 @@ function Texto() {
     addFile: false,
   });
   const [prediction, setPrediction] = useState({});
-  const [pfile, setPFile] = useState([]);
 
   const handleTextChange = (e) => {
     const placeholder = e.target.placeholder;
@@ -93,10 +92,7 @@ function Texto() {
       const result = await fetch(URL, requestOptions);
 
       if (result.status === 200) {
-        
         console.log("OK");
-        const data = await result.json();
-        setPFile(data);
         setValidationState((prevState) => ({
           ...prevState,
           file: true,
@@ -113,7 +109,7 @@ function Texto() {
   };
 
   const downloadCSV = () => {
-    const API_URL = "http://localhost:8000/download_predictions_csv"; // Replace with your API endpoint for XLSX download
+    const API_URL = "http://localhost:8000/download_predictions_csv";
     fetch(API_URL)
       .then((response) => {
         if (response.ok) {
@@ -123,7 +119,6 @@ function Texto() {
         }
       })
       .then((blob) => {
-        // Create a link element to trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -138,7 +133,7 @@ function Texto() {
   };
 
   const downloadXLSX = () => {
-    const API_URL = "http://localhost:8000/download_predictions_xlsx"; // Replace with your API endpoint for XLSX download
+    const API_URL = "http://localhost:8000/download_predictions_xlsx";
     fetch(API_URL)
       .then((response) => {
         if (response.ok) {
@@ -148,7 +143,6 @@ function Texto() {
         }
       })
       .then((blob) => {
-        // Create a link element to trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -177,10 +171,7 @@ function Texto() {
   return (
     <div>
       <div>
-        <img
-          src="../logo-agenda-2030-removebg-preview.png"
-          alt="aaa"
-        />
+        <img src="../logo-agenda-2030-removebg-preview.png" alt="aaa" />
 
         <AppInfo />
       </div>
