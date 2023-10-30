@@ -20,3 +20,7 @@ class Preprocessing (BaseEstimator, TransformerMixin):
       X["Textos_espanol"] = X["Textos_espanol"].astype(str)
 
       return X["Textos_espanol"]
+
+
+
+      

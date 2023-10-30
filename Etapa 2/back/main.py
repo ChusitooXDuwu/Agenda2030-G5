@@ -1,12 +1,10 @@
 import pandas as pd
-from typing import Optional
 from fastapi import FastAPI
 from joblib import load
 from onuModelo import DataModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse, FileResponse
-import json
 
 
 model = load("../../Etapa 1/model.joblib")
@@ -29,21 +27,13 @@ def read_root():
 
 @app.post("/predict")
 def make_predictions(dataModel: DataModel, ):
-   # texto = dataModel.dict()['Textos_espanol']
-   # df = pd.DataFrame([texto], columns=['Textos_espanol'])
-   # predict = model.predict(df)[0]
    df = pd.DataFrame(dataModel.dict(), columns=dataModel.dict().keys(), index=[0])
    df.columns = dataModel.columns()
    result = model.predict(df)
-
-
-   texto = dataModel.dict()['Textos_espanol']
-   response = {
-      "Textos_espanol": texto,
+   return {
+      "Textos_espanol": dataModel.dict()['Textos_espanol'],
       "sdg": int(result),
    }
-
-   return response
 
 @app.post("/predict_file")
 async def make_predictions_file(file: UploadFile=File(...)):
@@ -78,8 +68,7 @@ async def make_predictions_file(file: UploadFile=File(...)):
    except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
-
-# Descargar el archivo csv o xlsx
+# Descargar el archivo csv
 @app.get("/download_predictions_csv")
 def download_predictions():
    try:
@@ -88,6 +77,7 @@ def download_predictions():
       print(e)
       return JSONResponse(status_code=500, content={"message": "Hubo un error descargando el archivo"})
 
+# Descargar el archivo xlsx
 @app.get("/download_predictions_xlsx")
 def download_predictions():
    try:

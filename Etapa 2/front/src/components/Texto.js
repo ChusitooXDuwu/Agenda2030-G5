@@ -77,20 +77,16 @@ function Texto() {
     if (!validationState.addFile) {
       return;
     }
-
     const URL = "http://localhost:8000/predict_file";
     console.log(formValues.file);
     const formData = new FormData();
     formData.append("file", formValues.file);
-
     try {
       const requestOptions = {
         method: "POST",
         body: formData,
       };
-
       const result = await fetch(URL, requestOptions);
-
       if (result.status === 200) {
         console.log("OK");
         const data = await result.json();
@@ -106,12 +102,11 @@ function Texto() {
     } catch (error) {
       console.error(error);
     }
-
     console.log(validationState.file);
   };
 
   const downloadCSV = () => {
-    const API_URL = "http://localhost:8000/download_predictions_csv"; // Replace with your API endpoint for XLSX download
+    const API_URL = "http://localhost:8000/download_predictions_csv";
     fetch(API_URL)
       .then((response) => {
         if (response.ok) {
@@ -121,7 +116,6 @@ function Texto() {
         }
       })
       .then((blob) => {
-        // Create a link element to trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -131,12 +125,12 @@ function Texto() {
         window.URL.revokeObjectURL(url);
       })
       .catch((error) => {
-        console.error("Error downloading XLSX:", error);
+        console.error("Error downloading CSV:", error);
       });
   };
 
   const downloadXLSX = () => {
-    const API_URL = "http://localhost:8000/download_predictions_xlsx"; // Replace with your API endpoint for XLSX download
+    const API_URL = "http://localhost:8000/download_predictions_xlsx";
     fetch(API_URL)
       .then((response) => {
         if (response.ok) {
@@ -146,7 +140,6 @@ function Texto() {
         }
       })
       .then((blob) => {
-        // Create a link element to trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -294,8 +287,12 @@ function Texto() {
                 />
                 <br />
                 <br />
-                <Card.Link onClick={downloadCSV} className="download-link">Descargar CSV</Card.Link>
-                <Card.Link onClick={downloadXLSX} className="download-link">Descargar XLSX</Card.Link>
+                <Card.Link onClick={downloadCSV} className="download-link">
+                  Descargar CSV
+                </Card.Link>
+                <Card.Link onClick={downloadXLSX} className="download-link">
+                  Descargar XLSX
+                </Card.Link>
               </Card.Body>
             </Card>
           )}
