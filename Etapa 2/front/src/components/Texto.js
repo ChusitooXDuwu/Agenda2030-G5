@@ -77,16 +77,20 @@ function Texto() {
     if (!validationState.addFile) {
       return;
     }
+
     const URL = "http://localhost:8000/predict_file";
     console.log(formValues.file);
     const formData = new FormData();
     formData.append("file", formValues.file);
+
     try {
       const requestOptions = {
         method: "POST",
         body: formData,
       };
+
       const result = await fetch(URL, requestOptions);
+
       if (result.status === 200) {
         console.log("OK");
         const data = await result.json();
@@ -102,11 +106,12 @@ function Texto() {
     } catch (error) {
       console.error(error);
     }
+
     console.log(validationState.file);
   };
 
   const downloadCSV = () => {
-    const API_URL = "http://localhost:8000/download_predictions_csv";
+    const API_URL = "http://localhost:8000/download_predictions_csv"; // Replace with your API endpoint for XLSX download
     fetch(API_URL)
       .then((response) => {
         if (response.ok) {
@@ -116,6 +121,7 @@ function Texto() {
         }
       })
       .then((blob) => {
+        // Create a link element to trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -125,12 +131,12 @@ function Texto() {
         window.URL.revokeObjectURL(url);
       })
       .catch((error) => {
-        console.error("Error downloading CSV:", error);
+        console.error("Error downloading XLSX:", error);
       });
   };
 
   const downloadXLSX = () => {
-    const API_URL = "http://localhost:8000/download_predictions_xlsx";
+    const API_URL = "http://localhost:8000/download_predictions_xlsx"; // Replace with your API endpoint for XLSX download
     fetch(API_URL)
       .then((response) => {
         if (response.ok) {
@@ -140,6 +146,7 @@ function Texto() {
         }
       })
       .then((blob) => {
+        // Create a link element to trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -166,15 +173,15 @@ function Texto() {
   };
 
   return (
-    <>
+    <div>
       <Row className="row">
         <Col xs={validationState.sdg ? 6 : 12}>
-          <Container className="containerr">
+          <Container className="header">
             <h2 className="">Análisis de textos individuales</h2>
-            <Row className="justify-content-center">
-              <Form className="py-4 px-5 mt-5 forms">
+            <Row>
+              <Form className="py-0 px-5 forms">
                 <Row>
-                  <Form.Label className="formLabel">
+                  <Form.Label className="p">
                     Inserte el texto a clasificar
                   </Form.Label>
                   <Form.Control
@@ -235,18 +242,19 @@ function Texto() {
       </Row>
       <Row className="row">
         <Col xs={validationState.file ? 6 : 12}>
-          <Container className="containerr">
+          <Container className="header">
             <h2 className="">Análisis de archivos</h2>
             <Row className="justify-content-center">
-              <Form className="py-4 px-5 mt-5 forms">
+              <Form className="py-0 px-5 forms">
                 <Row>
-                  <Form.Label className="formLabel">
+                  <Form.Label className="p">
                     Adjunte el archivo a clasificar
                   </Form.Label>
                   <Form.Control
                     type="file"
                     onChange={handleFileChange}
                     accept=".xlsx,.csv"
+                    className="form-control2"
                   />
                 </Row>
 
@@ -287,18 +295,14 @@ function Texto() {
                 />
                 <br />
                 <br />
-                <Card.Link onClick={downloadCSV} className="download-link">
-                  Descargar CSV
-                </Card.Link>
-                <Card.Link onClick={downloadXLSX} className="download-link">
-                  Descargar XLSX
-                </Card.Link>
+                <Card.Link onClick={downloadCSV} className="download-link">Descargar CSV</Card.Link>
+                <Card.Link onClick={downloadXLSX} className="download-link">Descargar XLSX</Card.Link>
               </Card.Body>
             </Card>
           )}
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 

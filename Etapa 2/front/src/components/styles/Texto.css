@@ -17,7 +17,7 @@ Button {
   width: 100%;
 }
 
-#submit:disabled{
+#submit:disabled {
   background-color: rgba(143, 169, 143, 0.8) !important;
   color: rgba(0, 0, 0, 0.8) !important;
 }
@@ -29,24 +29,18 @@ Button {
 }
 
 .containerr {
-  margin-top: 10%;  
+  margin-top: 10%;
   padding: 16px;
   background-color: rgba(142, 183, 202, 0.596);
   border-radius: 5px;
   border: 1px solid #000000;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   align-self: center;
 }
 
 .loginB {
   width: 50%;
-}
-
-.formLabel {
-  text-align: left;
-  font-weight: 700;
-  font-size: 20px;
 }
 
 .error {
@@ -58,8 +52,16 @@ Button {
 
 .form-control {
   height: 40px;
-  border-radius: 0px;
-  border: 1px solid #000000;
+  border-radius: 15px 15px 0px 15px;
+  border: 1px solid #50515e;
+  padding-left: 5px;
+  background-color: rgb(255, 255, 255);
+}
+
+.form-control2 {
+  height: 40px;
+  border-radius: 15px 15px 15px 15px;
+  border: 1px solid #50515e;
   padding-left: 5px;
   background-color: rgb(255, 255, 255);
 }
@@ -74,4 +76,39 @@ Button {
 
 .download-link {
   cursor: pointer;
+}
+body {
+  background: linear-gradient(120grad, rgb(100, 57, 134), rgb(152, 174, 213));
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  position: relative;
+  z-index: 4;
+  background: white;
+  padding: 20px 40px;
+  border-radius: 15px 15px 15px 15px;
+
+  formLabel {
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #333;
+    font-size: 23px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.p {
+  word-spacing: 0px;
+  color: rgb(110, 117, 122);
+  font-size: 17px;
+  margin: 0;
+  margin-top: 5px;
+}
+h2 {
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
