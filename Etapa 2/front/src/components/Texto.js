@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import "./styles/Texto.css";
+import AppInfo from "./AppInfo";
 
 function Texto() {
   const [formValues, setFormValues] = useState({
@@ -174,6 +175,9 @@ function Texto() {
 
   return (
     <div>
+      <div>
+        <AppInfo />
+      </div>
       <Row className="row">
         <Col xs={validationState.sdg ? 6 : 12}>
           <Container className="header">
@@ -284,8 +288,9 @@ function Texto() {
               style={{
                 backgroundColor: "rgba(224, 187, 187, 0.2)",
                 marginTop: "10%",
+                
               }}
-              className="cards"
+              className="cards cards2"
             >
               <Card.Body>
                 <Card.Title className="title">Predicción</Card.Title>
